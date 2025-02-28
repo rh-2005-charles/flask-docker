@@ -25,6 +25,15 @@ jobs:
       - name: Checkout repopsitory
         uses: actions/checkout@v4
 
+      - name: Verificar Token
+        run: |
+          if [[ -z "${{ secrets.TOKEN }}" ]]; then
+            echo "El TOKEN está vacío o no está configurado correctamente."
+            exit 1
+          else
+            echo "TOKEN detectado, continuando con el login..."
+          fi
+
       - name: Logearnos en GHCR
         run: echo "${{secrets.TOKEN}}" | docker login ghcr.io -u rh-2005-charles --password-stdin
 

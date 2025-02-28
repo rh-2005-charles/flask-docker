@@ -1,0 +1,35 @@
+name: Prueba de Flask
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  decir-hola:
+    runs-on: ubuntu-latest
+    permissions: 
+      contents: read
+      packages: write
+    environment: produccion
+    steps:
+      - name: Mostrar mensaje
+        run: echo "Desplegando Flask"
+
+      - name: Enviar Peticion
+        run: |
+          curl -X POST 'https://webhook.site/892f2749-aba3-44c8-af63-04640edf7a85' \
+          -H 'Content-Type: application/json' \
+          -d '{"nombre": "Charles Revolo", "framework": "Flask"}'
+
+      - name: Checkout repopsitory
+        uses: actions/checkout@v4
+
+      - name: Logearnos en GHCR
+        run: echo "${{secrets.TOKEN}}" | docker login ghcr.io -u rh-2005-charles --password-stdin
+
+      - name: Crear Imagen
+        run: docker build . -t ghcr.io/rh-2005-charles/flask-image:latest
+
+      - name: Desplegar imagen
+        run: docker push ghcr.io/rh-2005-charles/flask-image:latest

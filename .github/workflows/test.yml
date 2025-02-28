@@ -11,7 +11,7 @@ jobs:
     permissions: 
       contents: read
       packages: write
-    environment: produccion
+    environment: produccionn
     steps:
       - name: Mostrar mensaje
         run: echo "Desplegando Flask"
